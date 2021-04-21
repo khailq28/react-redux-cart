@@ -21,7 +21,7 @@ var initialState = [
     {
         id: 3,
         name: 'Oppo F1s',
-        image: 'https://cdn.tgdd.vn/Products/Images/42/81592/oppo-f1s-7-300x300.jpg',
+        image: 'https://thaykinhmanhinhcamung.com/image/cache/data/sua-jack-cam-tai-nghe-oppo-f1s-a1601-2-550x550.jpg',
         description: 'Sản phẩm do china sản xuất',
         price: 400,
         inventory: 5,

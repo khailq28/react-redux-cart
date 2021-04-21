@@ -1,42 +1,59 @@
-import * as types from './../constants/ActionType'
+import * as Types from './../constants/ActionType'
 
 var data = JSON.parse(localStorage.getItem('CART'));
 
-// var initialState = data ? data : []
-var initialState = [
-    {
-        product: {
-            id: 3,
-            name: 'Oppo F1s',
-            image: 'https://cdn.tgdd.vn/Products/Images/42/81592/oppo-f1s-7-300x300.jpg',
-            description: 'Sản phẩm do china sản xuất',
-            price: 400,
-            inventory: 5,
-            rating: 3
-        },
-        quanity: 5
-    },
-    {
-        product: {
-            id: 2,
-            name: 'Samsung Galaxy S7',
-            image: 'https://www.xtmobile.vn/vnt_upload/product/01_2018/thumbs/600_s7_silver_han_600x600.jpg',
-            description: 'Sản phẩm do samsung sản xuất',
-            price: 450,
-            inventory: 15,
-            rating: 5
-        },
-        quanity: 2
-    }
-]
+var initialState = data ? data : []
 
 const cart = (state = initialState, action) => {
+    var { product, quanity } = action
+    var index = -1
     switch (action.type) {
-        case types.ADD_TO_CART:
-            console.log(action)
+        case Types.ADD_TO_CART:
+            index = findProductInCart(state, product)
+            if (index !== -1) {
+                state[index].quanity += quanity
+            } else {
+                state.push({
+                    product,
+                    quanity
+                })
+            }
+            localStorage.setItem('CART', JSON.stringify(state))
+            return [...state]
+        case Types.DELETE_PRODUCT_IN_CART:
+            index = findProductInCart(state, product)
+            if (index !== -1) {
+                state.splice(index, 1)
+            }
+            localStorage.setItem('CART', JSON.stringify(state))
+            return [...state]
+        case Types.UPDATE_PRODUCT_IN_CART:
+            index = findProductInCart(state, product)
+            if (index !== -1) {
+                state[index].quanity = quanity
+            } else {
+                state.push({
+                    product,
+                    quanity
+                })
+            }
+            localStorage.setItem('CART', JSON.stringify(state))
             return [...state]
         default: return [...state]
     }
+}
+
+var findProductInCart = (cart, product) => {
+    var index = -1
+    if (cart.length > 0) {
+        for (var i = 0; i < cart.length; i++) {
+            if (cart[i].product.id === product.id) {
+                index = i
+                break
+            }
+        }
+    }
+    return index
 }
 
 export default cart
